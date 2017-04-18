@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="java," />
 
 
 
@@ -87,16 +87,16 @@
 
 
 
-<meta name="description" content="做一个安静的人，读书，旅行，等待爱情。">
+<meta name="description" content="最近的开发工作中，自己在绘制CAP曲线时，需要比较精确的计算。所以从网上搜索资料，结合自己的理解，记录如何正确使用这个类。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="a final class">
+<meta property="og:title" content="个人对类BigDecimal的一些见解">
 <meta property="og:url" content="http://yoursite.com/2017/04/18/a-final-class/index.html">
 <meta property="og:site_name" content="FREEDOMTECH">
-<meta property="og:description" content="做一个安静的人，读书，旅行，等待爱情。">
-<meta property="og:updated_time" content="2017-04-18T11:14:34.168Z">
+<meta property="og:description" content="最近的开发工作中，自己在绘制CAP曲线时，需要比较精确的计算。所以从网上搜索资料，结合自己的理解，记录如何正确使用这个类。">
+<meta property="og:updated_time" content="2017-04-18T14:12:40.543Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="a final class">
-<meta name="twitter:description" content="做一个安静的人，读书，旅行，等待爱情。">
+<meta name="twitter:title" content="个人对类BigDecimal的一些见解">
+<meta name="twitter:description" content="最近的开发工作中，自己在绘制CAP曲线时，需要比较精确的计算。所以从网上搜索资料，结合自己的理解，记录如何正确使用这个类。">
 
 
 
@@ -130,7 +130,7 @@
 
 
 
-  <title> a final class | FREEDOMTECH </title>
+  <title> 个人对类BigDecimal的一些见解 | FREEDOMTECH </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -288,7 +288,7 @@
             
             
               
-                a final class
+                个人对类BigDecimal的一些见解
               
             
           </h1>
@@ -337,6 +337,10 @@
           
 
           
+              <div class="post-description">
+                  最近的开发工作中，自己在绘制CAP曲线时，需要比较精确的计算。所以从网上搜索资料，结合自己的理解，记录如何正确使用这个类。
+              </div>
+          
 
         </div>
       </header>
@@ -349,7 +353,13 @@
       
 
       
-        
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><div class="note primary"><p>Immutable, arbitrary-precision signed decimal numbers. A BigDecimal consists of an arbitrary precision integer unscaled value and a 32-bit integer scale. If zero or positive, the scale is the number of digits to the right of the decimal point. If negative, the unscaled value of the number is multiplied by ten to the power of the negation of the scale. The value of the number represented by the BigDecimal is therefore (unscaledValue × 10-scale).<br>翻译如下：<br>BigDecimal 由任意精度的整数非标度值 和32 位的整数标度 (scale) 组成。如果为零或正数，则标度是小数点后的位数。如果为负数，则将该数的非标度值乘以 10 的负scale 次幂。因此，BigDecimal表示的数值是(unscaledValue × 10-scale)。</p>
+</div>
+<h1 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h1><h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ol>
+<li><a href="http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html" target="_blank" rel="external">The Java API–BigDecimal</a></li>
+<li><a href="http://blog.csdn.net/jackiehff/article/details/8582449" target="_blank" rel="external">jackiehff的CSDN博客</a></li>
+</ol>
+
       
     </div>
 
@@ -375,6 +385,12 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
       
 
       
@@ -442,8 +458,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://olkbgv8u6.bkt.clouddn.com/valueyouth.jpg"
@@ -471,7 +496,7 @@
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
@@ -502,6 +527,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造方法"><span class="nav-number">2.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文档"><span class="nav-number">3.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
