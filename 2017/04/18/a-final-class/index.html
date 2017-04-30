@@ -93,7 +93,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/04/18/a-final-class/index.html">
 <meta property="og:site_name" content="FREEDOMTECH">
 <meta property="og:description" content="最近的开发工作中，自己在绘制CAP曲线时，需要比较精确的计算。所以从网上搜索资料，结合自己的理解，记录如何正确使用这个类。">
-<meta property="og:updated_time" content="2017-04-20T13:51:30.616Z">
+<meta property="og:updated_time" content="2017-04-30T08:48:21.868Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="个人对类BigDecimal的一些见解">
 <meta name="twitter:description" content="最近的开发工作中，自己在绘制CAP曲线时，需要比较精确的计算。所以从网上搜索资料，结合自己的理解，记录如何正确使用这个类。">
@@ -368,9 +368,24 @@
 <h1 id="BigDecimal的“不可变”性"><a href="#BigDecimal的“不可变”性" class="headerlink" title="BigDecimal的“不可变”性"></a>BigDecimal的“不可变”性</h1><p>以源码中的valueOf()方法为例，解释何为不可变的。源码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> BigDecimal <span class="title">valueOf</span><span class="params">(<span class="keyword">long</span> unscaledVal, <span class="keyword">int</span> scale, <span class="keyword">int</span> prec)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (scale == <span class="number">0</span> &amp;&amp; unscaledVal &gt;= <span class="number">0</span> &amp;&amp; unscaledVal &lt; zeroThroughTen.length) &#123;</div><div class="line">        <span class="keyword">return</span> zeroThroughTen[(<span class="keyword">int</span>) unscaledVal];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (unscaledVal == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span> zeroValueOf(scale);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> BigDecimal(unscaledVal == INFLATED ? INFLATED_BIGINT : <span class="keyword">null</span>, unscaledVal, scale, prec);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>在第8行中，返回值返回了一个新的BigDecimal对象。很显然，原对象的属性并没有发生任何变化。所以说BigDecimal类是不可变的。《Effective Java》中对不可变类的定义如下：<br><div class="note primary"><p>An immutable class is simply a class whose instances cannot be modified. All of the information contained in each instance is provided when it is created and is fixed for the lifetime of the object.<br>　　不可变类只是其实例不能被修改的类，每个实例中包含的所有信息都必须在创建该实例的时候就提供，并在对象的整个生命周期内固定不变。</p>
 </div></p>
-<h1 id="final与immutable的辩证关系"><a href="#final与immutable的辩证关系" class="headerlink" title="final与immutable的辩证关系"></a>final与immutable的辩证关系</h1><h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ol>
+<h1 id="舍入方式RoundingMode"><a href="#舍入方式RoundingMode" class="headerlink" title="舍入方式RoundingMode"></a>舍入方式RoundingMode</h1><p>java中共有7种舍入方法，列举如下：</p>
+<ol>
+<li>ROUND_UP:远离零方向舍入，即向绝对值大的方向舍入，非零就进位。</li>
+<li>ROUND_DOWN:趋向零方向舍入。即向绝对值小的方向舍入，所有位都要舍弃。</li>
+<li>ROUND_CEILING:向正无穷方向舍入。若是正数，同ROUND_UP；若是负数，同ROUND_DOWN。</li>
+<li>ROUND_FLOOR:向负无穷方向舍入。若是正数，同ROUND_DOWN；若是负数，同ROUND_UP。</li>
+<li>HALF_UP:最近数字舍入（5入），这也是经典的四舍五入法。</li>
+<li>HALF_DOWN:最近数字舍入（5舍）。</li>
+<li>HALF_EVEN:银行家舍入法，四舍六入五取偶。即当x &gt;= 6时，舍去该位的同时，前位进一；当x &lt; 5时，直接舍去；当x = 5时，若前位为奇数则前位进一，若前位为偶数则直接舍去。</li>
+</ol>
+<h1 id="final与immutable的辩证关系"><a href="#final与immutable的辩证关系" class="headerlink" title="final与immutable的辩证关系"></a>final与immutable的辩证关系</h1><ol>
+<li>区别<br>首先说下关键字final。final在Java中是一个保留的关键字，一旦你将引用声明作final，你将不能改变这个引用了，编译器会检查代码，如果你试图将变量再次初始化的话，编译器会报编译错误。具体是指：对于final修饰的变量（包括成员变量、方法中的变量与代码块中的变量），一旦初始化后便不可再被更改（变量有基础数据类型和引用类型之分，对于前者而言，变量值一旦定义就不可再改变；而对于后者而言，是指这个变量不可再指向其他引用）；对于final修饰的方法，表示该方法不可以在子类中被重写；对于final修饰的类，表示该类不可以被继承。<br>下面说下immutable，即不可变类，它是相对于可变类而言的。所谓不可变类，是指当创建了这个类的实例后，就不允许修改它的属性值。<br>事实上，被final关键字修饰对象的属性值是可以被修改的，而不可变类是不可以修改的。当你试图去修改时，它会返回一个新的对象给你。</li>
+<li>联系<br>final关键字是实现不可变类的基础。一个典型的不可变类的设计大概如下：第一步，向目标类添加修饰符final，保证其不被任何类继承；第二步，向目标类所有的成员变量添加private final修饰；只提供get方法，不提供set方法。</li>
+</ol>
+<h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><ol>
 <li><a href="http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html" target="_blank" rel="external">The Java API–BigDecimal</a></li>
 <li><a href="http://blog.csdn.net/jackiehff/article/details/8582449" target="_blank" rel="external">jackiehff的CSDN博客</a></li>
+<li><a href="http://www.cnblogs.com/chenssy/p/3366632.html" target="_blank" rel="external">java提高篇(三)—–java的四舍五入</a></li>
 </ol>
 
       
@@ -554,7 +569,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造方法"><span class="nav-number">2.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方法divide-参数的理解"><span class="nav-number">3.</span> <span class="nav-text">方法divide()参数的理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BigDecimal的“不可变”性"><span class="nav-number">4.</span> <span class="nav-text">BigDecimal的“不可变”性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#final与immutable的辩证关系"><span class="nav-number">5.</span> <span class="nav-text">final与immutable的辩证关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文档"><span class="nav-number">6.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造方法"><span class="nav-number">2.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方法divide-参数的理解"><span class="nav-number">3.</span> <span class="nav-text">方法divide()参数的理解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BigDecimal的“不可变”性"><span class="nav-number">4.</span> <span class="nav-text">BigDecimal的“不可变”性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#舍入方式RoundingMode"><span class="nav-number">5.</span> <span class="nav-text">舍入方式RoundingMode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#final与immutable的辩证关系"><span class="nav-number">6.</span> <span class="nav-text">final与immutable的辩证关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文档"><span class="nav-number">7.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
             
 
           </div>
