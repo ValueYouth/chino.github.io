@@ -114,7 +114,7 @@
 <meta property="og:url" content="https://valueyouth.github.io/2017/05/21/a-simple-text-about-regex/index.html">
 <meta property="og:site_name" content="FREEDOMTECH">
 <meta property="og:description" content="正则表达式，一个让人又爱又恨的字符串处理工具。俗话说，万事开头难。网上好多关于正则表达式的资料，大多数都会让读者在一开始就对正则表达式望而却步，所以让读者入门都成问题，更别提深入理解正则表达式。在上周的工作中，我又碰到了与正则表达式相关的问题，就又再一次硬着头皮去网上寻找自己想要的那种入门学习。终于，功夫不负有心人，让我有点入了正则表达式的门了。">
-<meta property="og:updated_time" content="2017-05-21T15:23:56.006Z">
+<meta property="og:updated_time" content="2017-05-29T11:07:41.032Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="让正则表达式简单一些">
 <meta name="twitter:description" content="正则表达式，一个让人又爱又恨的字符串处理工具。俗话说，万事开头难。网上好多关于正则表达式的资料，大多数都会让读者在一开始就对正则表达式望而却步，所以让读者入门都成问题，更别提深入理解正则表达式。在上周的工作中，我又碰到了与正则表达式相关的问题，就又再一次硬着头皮去网上寻找自己想要的那种入门学习。终于，功夫不负有心人，让我有点入了正则表达式的门了。">
@@ -369,38 +369,76 @@
       
 
       
-        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>　　正则表达式（Regular Expression），即预先设置一条字符串描述一个特征，然后用它去验证另一个字符串是否匹配这个特征。例如，验证用户输入的邮件地址是否合法；验证手机号码是否合法等等。</p>
-<h3 id="语法（简单）"><a href="#语法（简单）" class="headerlink" title="语法（简单）"></a>语法（简单）</h3><ul>
+        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>　　正则表达式（Regular Expression），即预先设置一条字符串描述一个特征，然后用它去验证另一个字符串是否匹配这个特征。例如，验证用户输入的邮件地址是否合法；验证手机号码是否合法等等。<br>    正则表达式由两种字符组成：“元字符”和“普通字符”。其中，前者在正则表达式中有特殊的意义。它可以是一个字符，也可以是一个字符序列。后者则是普通的文本字符。</p>
+<h3 id="语法（简单）"><a href="#语法（简单）" class="headerlink" title="语法（简单）"></a>语法（简单）</h3><p>正则表达式中比较重要的三个地方：括号（B）、插入符号（C）以及美元符号（D）。</p>
+<ul>
 <li>括号（Bracket）</li>
 </ul>
 <table>
 <thead>
 <tr>
 <th>符号</th>
-<th>描述</th>
+<th style="text-align:left">备注</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>大括号{}</td>
-<td>指定匹配字符的数量</td>
+<td style="text-align:left">指定匹配字符的数量</td>
 </tr>
 <tr>
 <td>中括号[]</td>
-<td>需要匹配的字符</td>
+<td style="text-align:left">需要匹配的字符，且只匹配一个字符</td>
 </tr>
 <tr>
 <td>小括号()</td>
-<td>分组</td>
+<td style="text-align:left">匹配字符串任何位置中按相同顺序排列的字符；分组</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li><p>插入符号（Caret）<br>插入符号“^”，表示正则表达式的开始。</p>
+<li><p>插入符号（Caret）<br>插入符号“^”，表示正则表达式的开始。与字符串开始的地方匹配，不匹配任何字符。</p>
 </li>
-<li><p>美元符号（Dollar）<br>美元符号“$”，表示正则表达式的结束。</p>
+<li><p>美元符号（Dollar）<br>美元符号“$”，表示正则表达式的结束。与字符串结束的地方匹配，不匹配任何字符。</p>
 </li>
 </ul>
+<p>举例如下：</p>
+<ol>
+<li><p>^[0-9]$<br>描述：匹配0-9之间的任何一个数字，而且仅匹配一个数字。</p>
+</li>
+<li><p>^g[o]{2,3}gle$<br>描述：匹配以字符“g”开头，以字符序列“le”结尾，中间匹配字符“o”，它可以出现2-3次。即只有字符序列“google”和“gooogle”会被匹配到。</p>
+</li>
+</ol>
+<h3 id="语法（详细）"><a href="#语法（详细）" class="headerlink" title="语法（详细）"></a>语法（详细）</h3><ul>
+<li>字符组“[]”<br>字符组是一组中括号，即[]。它可以匹配[]中包含的任意一个且只匹配一个字符。<br>在字符组中可以用连字符“-”来表示范围，可以用插入符号“^”表示排除型字符组。在字符组之外，“-”和“^”都只是普通的字符。  </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[0-9]</td>
+<td>表示任意一个数字，且只表示一个数字。</td>
+</tr>
+<tr>
+<td>[a-z]</td>
+<td>表示任意一个小写字母</td>
+</tr>
+<tr>
+<td>[A-Z]</td>
+<td>表示任意一个大写字母</td>
+</tr>
+<tr>
+<td>[\u4e00-\u9fa5]</td>
+<td>表示任意一个汉字</td>
+</tr>
+</tbody>
+</table>
+<p>注意：如果将字符组表达式[0-9]改为[^0-9]，则表示的意思刚好相反。它表示任意一个非数字字符。</p>
 <h3 id="经典使用案例"><a href="#经典使用案例" class="headerlink" title="经典使用案例"></a>经典使用案例</h3>
       
     </div>
@@ -640,7 +678,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法（简单）"><span class="nav-number">2.</span> <span class="nav-text">语法（简单）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经典使用案例"><span class="nav-number">3.</span> <span class="nav-text">经典使用案例</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法（简单）"><span class="nav-number">2.</span> <span class="nav-text">语法（简单）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法（详细）"><span class="nav-number">3.</span> <span class="nav-text">语法（详细）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经典使用案例"><span class="nav-number">4.</span> <span class="nav-text">经典使用案例</span></a></li></ol></div>
             
 
           </div>
